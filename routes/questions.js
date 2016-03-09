@@ -60,4 +60,24 @@ router.patch("/:id", function(req, res){
   });
 });
 
+router.get("/", function(req, res){
+  Question.find({}, function(err, questions){
+    if(err) {
+      res.render('error', {message: "Error Happend!", error: {status: 500}});
+    } else {
+      res.render("questions/index", {questions: questions});
+    }
+  });
+});
+
+router.delete("/:id", function(req, res) {
+  Question.remove({_id: req.params.id}, function(err, question){
+    if(err) {
+      res.render("questions/"+ question.id, {errors: err.errors, question: question});
+    } else {
+      res.redirect("/questions");
+    }
+  });
+});
+
 module.exports = router;
